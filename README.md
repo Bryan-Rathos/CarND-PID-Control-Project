@@ -1,3 +1,17 @@
+# PID Tuning
+PID stands for Proportional Intrgral Derivative controller. PID are the gains of the controller based on which necessary control action is taken. The error signal is the component used to calculate the control action. Error signal in this case is the difference between the center of the road (desired value) and the actual postion of thr car (current value).
+
+The Proportional only controller takes corrective action based on the error. The control action is directly proportional to the error. The proportionality constant is the proportional gain (Kp) which has to be set by us, which will determine how sensitive will the control action be to the error. Similar is the case with the derivative gain (Kd) and integral gain (Ki). However, the P only controller on its own is not enough to keep up with the target value, because the car will oscillate because of its inertia (overshoot). To account for this the PD controller is useful. 
+
+The derivative gain sort off predicts where the next position of the car would be based on currenrt and past measurements between two time steps and takes control action combined with the proportional control. This reduces the response time of the controller and corrects for the oscillation of the car. 
+
+The integral gain reduces the steady state error (bias) by collecting the error over time or to compensate for any inherent bias or external disturbance. The bias here can be the steering drift as explained in the lessons. Since, there is no steering bias here the Ki gain is used to reduce the steady state error over few time steps once the current values is within 5% to 10% of the target value. This is especially evident during the turns on the track. The CTE in the only PD control tends to be somewhat constant, but with the PID control CTE converges towards zero.
+
+I used manual tuning to selct the PID values. I first set Ki and Kd to 0 and played with the Kp valuse so the it showcases sustained oscillations and atleast reaches till the bridge or some distance before it. Then I started tuning Kd values to remove these oscillations and then again moved the Kp values a bit up and down and again played with the Kd to get a reasonable driving around the track and good driving along the middle of the road. PD control is sometimes kind of jerky, so the Kd value needs to be lowered accordingly. Then introduced the Ki term to redusce the steady state error of the steering value. The Ki term is typically very low of the order 0.001 since error accumulated over time would be high and we need to have a low Ki gain to reduce the large control output. 
+
+I have included [videos](./writeup_video) for P only control, PD control and PID control.
+
+
 # CarND-Controls-PID
 Self-Driving Car Engineer Nanodegree Program
 
